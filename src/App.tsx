@@ -4,7 +4,7 @@ function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <main>
-        <h1>React ShadCN Template</h1>
+        <h1>Taskify</h1>
       </main>
     </ThemeProvider>
   )
