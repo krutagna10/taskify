@@ -1,6 +1,6 @@
 import { ThemeProvider } from "@/components/theme-provider";
 import TodoHeader from "./components/todo-header";
-import TodosProvider from "./context/TodosProvider";
+import TodosProvider from "./context/todos-provider";
 
 function App() {
   return (

@@ -1,3 +1,5 @@
+import { useContext, useState } from "react";
+import TodosContext from "@/context/todos-context";
 import { Button } from "./ui/button";
 import {
   Dialog,
@@ -10,6 +12,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "./ui/label";
 
 function TodoHeader() {
+  const { onTodoAdd } = useContext(TodosContext);
+  const [title, setTitle] = useState("");
+
+  function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setTitle(event.target.value);
+  }
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    onTodoAdd(title);
+  }
+
   return (
     <div className="flex items-center gap-4">
       <h1 className="text-3xl">Taskify</h1>
@@ -23,9 +37,14 @@ function TodoHeader() {
           <DialogHeader>
             <DialogTitle>Add new Task</DialogTitle>
           </DialogHeader>
-          <form className="flex flex-col gap-4">
+          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <Label htmlFor="title">Title</Label>
-            <Input id="title" type="text" placeholder="Enter title" />
+            <Input
+              id="title"
+              onChange={handleTitleChange}
+              type="text"
+              placeholder="Enter title"
+            />
             <Button className="self-end">Add Todo</Button>
           </form>
         </DialogContent>
