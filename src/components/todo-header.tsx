@@ -1,14 +1,35 @@
 import { Button } from "./ui/button";
-import { PlusIcon } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "./ui/label";
 
 function TodoHeader() {
   return (
     <div className="flex items-center gap-4">
       <h1 className="text-3xl">Taskify</h1>
-      <Button className="flex cursor-pointer items-center bg-green-600 text-white hover:bg-green-700">
-        <PlusIcon size={48} />
-        <span>Add Todo</span>
-      </Button>
+      <Dialog>
+        <DialogTrigger>
+          <Button className="flex cursor-pointer items-center bg-green-700 text-white hover:bg-green-800">
+            Add Todo
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add new Task</DialogTitle>
+          </DialogHeader>
+          <form className="flex flex-col gap-4">
+            <Label htmlFor="title">Title</Label>
+            <Input id="title" type="text" placeholder="Enter title" />
+            <Button className="self-end">Add Todo</Button>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

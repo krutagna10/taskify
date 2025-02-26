@@ -1,12 +1,15 @@
 import { ThemeProvider } from "@/components/theme-provider";
 import TodoHeader from "./components/todo-header";
+import TodosProvider from "./context/TodosProvider";
 
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <main>
-        <TodoHeader />
-      </main>
+      <TodosProvider>
+        <main>
+          <TodoHeader />
+        </main>
+      </TodosProvider>
     </ThemeProvider>
   );
 }
