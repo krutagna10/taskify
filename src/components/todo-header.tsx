@@ -10,10 +10,12 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "./ui/label";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 function TodoHeader() {
   const { onTodoAdd } = useContext(TodosContext);
   const [title, setTitle] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setTitle(event.target.value);
@@ -22,13 +24,14 @@ function TodoHeader() {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     onTodoAdd(title);
+    setIsDialogOpen(false);
   }
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center justify-between gap-4">
       <h1 className="text-3xl">Taskify</h1>
-      <Dialog>
-        <DialogTrigger>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogTrigger asChild>
           <Button className="flex cursor-pointer items-center bg-green-700 text-white hover:bg-green-800">
             Add Todo
           </Button>
@@ -44,6 +47,7 @@ function TodoHeader() {
               onChange={handleTitleChange}
               type="text"
               placeholder="Enter title"
+              required
             />
             <Button className="self-end">Add Todo</Button>
           </form>
