@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "./ui/label";
 import { DialogClose } from "@radix-ui/react-dialog";
+import { Textarea } from "./ui/textarea";
 
 function TodoHeader() {
   const { onTodoAdd } = useContext(TodosContext);
@@ -49,6 +50,7 @@ function TodoHeader() {
               placeholder="Enter title"
               required
             />
+            <Textarea placeholder="Enter Description" />
             <Button className="self-end">Add Todo</Button>
           </form>
         </DialogContent>
