@@ -1,5 +1,5 @@
-import { useContext, useState } from "react";
-import TodosContext from "@/context/todos-context";
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "./ui/button";
 import {
   Dialog,
@@ -7,51 +7,57 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "./ui/label";
-import { DialogClose } from "@radix-ui/react-dialog";
 import { Textarea } from "./ui/textarea";
 
+
+type FormInputs = {
+  title: string;
+  description: string;
+};
+
 function TodoHeader() {
-  const { onTodoAdd } = useContext(TodosContext);
-  const [title, setTitle] = useState("");
+  const { register, handleSubmit } = useForm<FormInputs>();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setTitle(event.target.value);
-  }
-
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    onTodoAdd(title);
-    setIsDialogOpen(false);
-  }
+  const onSubmit: SubmitHandler<FormInputs> = (data) => console.log(data);
 
   return (
     <div className="flex items-center justify-between gap-4">
       <h1 className="text-3xl">Taskify</h1>
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger asChild>
-          <Button className="flex cursor-pointer items-center bg-green-700 text-white hover:bg-green-800">
+          <Button className="cursor-pointer items-center bg-green-700 text-white hover:bg-green-800">
             Add Todo
           </Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Add new Task</DialogTitle>
+            <DialogDescription>
+              Please enter the title and description of task you want to add
+            </DialogDescription>
           </DialogHeader>
-          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+          <form
+            className="flex flex-col gap-4"
+            onSubmit={handleSubmit(onSubmit)}
+          >
             <Label htmlFor="title">Title</Label>
             <Input
-              id="title"
-              onChange={handleTitleChange}
+              {...register("title")}
               type="text"
               placeholder="Enter title"
-              required
             />
-            <Textarea placeholder="Enter Description" />
-            <Button className="self-end">Add Todo</Button>
+            <Textarea
+              {...register("description")}
+              placeholder="Enter description"
+            />
+            <Button className="cursor-pointer items-center self-end bg-green-700 text-white hover:bg-green-800">
+              Add Todo
+            </Button>
           </form>
         </DialogContent>
       </Dialog>
