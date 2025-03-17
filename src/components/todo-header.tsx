@@ -7,12 +7,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogDescription
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
-
 
 type FormInputs = {
   title: string;
@@ -23,7 +21,9 @@ function TodoHeader() {
   const { register, handleSubmit } = useForm<FormInputs>();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const onSubmit: SubmitHandler<FormInputs> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<FormInputs> = (data) => {
+    console.log(data);
+  };
 
   return (
     <div className="flex items-center justify-between gap-4">
@@ -45,7 +45,6 @@ function TodoHeader() {
             className="flex flex-col gap-4"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <Label htmlFor="title">Title</Label>
             <Input
               {...register("title")}
               type="text"
