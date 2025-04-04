@@ -1,8 +1,9 @@
 import { createContext } from "react";
+import { Todo } from "@/types";
 
 interface Todos {
-  todos: { id: string, title: string }[],
-  onTodoAdd: (title: string) => void,
+  todos: Todo[];
+  onTodoAdd: (title: string, description: string) => void;
 }
 
 const TodosContext = createContext<Todos>({
