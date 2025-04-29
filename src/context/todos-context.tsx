@@ -6,9 +6,6 @@ interface Todos {
   onTodoAdd: (title: string, description: string) => void;
 }
 
-const TodosContext = createContext<Todos>({
-  todos: [],
-  onTodoAdd: () => {},
-});
+const TodosContext = createContext<Todos>({} as Todos);
 
 export default TodosContext;
