@@ -1,14 +1,16 @@
 import { createContext } from "react";
 import { Todo } from "@/types";
 
-interface Todos {
+interface TodosState {
   todos: Todo[];
   onTodoAdd: (title: string, description: string) => void;
 }
 
-const TodosContext = createContext<Todos>({
-  todos: [],
-  onTodoAdd: () => {},
-});
+const TodosContext = createContext<TodosState>(
+  {} as TodosState,
+);
 
 export default TodosContext;
+
+
+

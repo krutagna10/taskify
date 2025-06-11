@@ -13,6 +13,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
+import { useContext } from "react";
+import TodosContext from "@/context/todos/todos-context";
 
 const formSchema = z.object({
   title: z.string().min(1, { message: "Title cannot be empty" }),
@@ -24,6 +26,7 @@ interface TodoAddFormProps {
 }
 
 function TodoAddForm({ onDialogClose }: TodoAddFormProps) {
+  const { onTodoAdd } = useContext(TodosContext);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -34,6 +37,7 @@ function TodoAddForm({ onDialogClose }: TodoAddFormProps) {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     onDialogClose();
+    onTodoAdd(values.title, values.description);
   }
 
   return (

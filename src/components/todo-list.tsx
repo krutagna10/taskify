@@ -1,6 +1,6 @@
-import { useContext } from "react";
-import TodosContext from "@/context/todos-context";
 import { EllipsisVertical } from "lucide-react";
+import TodosContext from "@/context/todos/todos-context";
+import { useContext } from "react";
 
 function TodoList() {
   const { todos } = useContext(TodosContext);

@@ -1,7 +1,9 @@
+type Theme = "dark" | "light" | "system";
+
 interface Todo {
-  id: number;
+  id: string;
   title: string;
   description: string;
 }
 
-export type { Todo }
+export type { Theme, Todo };
