@@ -1,6 +1,6 @@
-import { EllipsisVertical } from "lucide-react";
 import TodosContext from "@/context/todos/todos-context";
 import { useContext } from "react";
+import TodoItem from "./todo-item";
 
 function TodoList() {
   const { todos } = useContext(TodosContext);
@@ -9,13 +9,7 @@ function TodoList() {
     <div className="w-[min(32rem,100vw)]">
       <ul className="space-y-4">
         {todos.map((todo) => (
-          <li
-            className="flex items-center justify-between bg-zinc-900 p-4"
-            key={todo.id}
-          >
-            <span>{todo.title}</span>
-            <EllipsisVertical />
-          </li>
+          <TodoItem todo={todo} />
         ))}
       </ul>
     </div>
