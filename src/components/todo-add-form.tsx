@@ -50,7 +50,7 @@ function TodoAddForm({ onDialogClose }: TodoAddFormProps) {
             <FormItem>
               <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input placeholder="Task 1" {...field} />
+                <Input placeholder="Task Name" {...field} />
               </FormControl>
               <FormDescription>This is your todo title</FormDescription>
               <FormMessage />
