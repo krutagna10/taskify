@@ -15,7 +15,9 @@ const InitialTodos: Todo[] = [
   },
 ];
 
-type TodosAction = { type: "add-todo"; title: string; description: string };
+type TodosAction =
+  | { type: "add-todo"; title: string; description: string }
+  | { type: "delete-todo"; deleteId: string };
 
 function todosReducer(todos: Todo[], action: TodosAction): Todo[] {
   switch (action.type) {
@@ -27,6 +29,11 @@ function todosReducer(todos: Todo[], action: TodosAction): Todo[] {
       };
       return [...todos, newTodo];
     }
+
+    case "delete-todo": {
+      return todos.filter((todo) => todo.id !== action.deleteId);
+    }
+
     default:
       throw new Error("Unknown action");
   }
@@ -39,13 +46,18 @@ interface TodosProviderProps {
 function TodosProvider({ children }: TodosProviderProps) {
   const [todos, dispatch] = useReducer(todosReducer, InitialTodos);
 
-  function handleTodoAdd(title: string, description: string) {
+  const handleTodoAdd = (title: string, description: string) => {
     dispatch({ type: "add-todo", title, description });
-  }
+  };
+
+  const handleTodoDelete = (deleteId: string): void => {
+    dispatch({ type: "delete-todo", deleteId });
+  };
 
   const value = {
     todos: todos,
     onTodoAdd: handleTodoAdd,
+    onTodoDelete: handleTodoDelete,
   };
 
   return (
