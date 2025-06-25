@@ -4,6 +4,7 @@ import { Todo } from "@/types";
 interface TodosState {
   todos: Todo[];
   onTodoAdd: (title: string, description: string) => void;
+  onTodoEdit: (editedTodo: Todo) => void;
   onTodoDelete: (deleteId: string) => void;
 }
 

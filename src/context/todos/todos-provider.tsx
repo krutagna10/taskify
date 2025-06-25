@@ -17,6 +17,7 @@ const InitialTodos: Todo[] = [
 
 type TodosAction =
   | { type: "add-todo"; title: string; description: string }
+  | { type: "edit-todo"; editedTodo: Todo }
   | { type: "delete-todo"; deleteId: string };
 
 function todosReducer(todos: Todo[], action: TodosAction): Todo[] {
