@@ -1,22 +1,27 @@
-import TodosContext from "@/context/todos/todos-context";
 import { useContext } from "react";
-import TodoItem from "./todo-item";
+import TodosContext from "@/context/todos/todos-context";
+import { Container } from "@/components/ui/container";
+import TodoHeader from "@/components/todo-header";
+import TodoItem from "@/components/todo-item";
 
 function TodoList() {
-  const { todos, onTodoDelete } = useContext(TodosContext);
+  const { todos } = useContext(TodosContext);
 
   return (
-    <div className="w-[min(32rem,100vw)]">
-      <ul className="space-y-4">
-        {todos.length === 0 ? (
-          <p>You don't have any tasks</p>
-        ) : (
-          todos.map((todo) => (
-            <TodoItem key={todo.id} todo={todo} onTodoDelete={onTodoDelete} />
-          ))
-        )}
-      </ul>
-    </div>
+    <section className="mt-8">
+      <Container className="w-[min(36rem,100vw)] space-y-4">
+        <TodoHeader />
+        <div>
+          <ul className="space-y-4">
+            {todos.length === 0 ? (
+              <p>You don't have any tasks</p>
+            ) : (
+              todos.map((todo) => <TodoItem key={todo.id} todo={todo} />)
+            )}
+          </ul>
+        </div>
+      </Container>
+    </section>
   );
 }
 

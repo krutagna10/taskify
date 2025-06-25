@@ -1,6 +1,6 @@
 import { useReducer } from "react";
 import TodosProviderContext from "./todos-context";
-import { Todo } from "@/types";
+import { Todo } from "@/types/types";
 
 const InitialTodos: Todo[] = [
   {
@@ -31,6 +31,12 @@ function todosReducer(todos: Todo[], action: TodosAction): Todo[] {
       return [...todos, newTodo];
     }
 
+    case "edit-todo": {
+      return todos.map((todo) =>
+        todo.id === action.editedTodo.id ? action.editedTodo : todo,
+      );
+    }
+
     case "delete-todo": {
       return todos.filter((todo) => todo.id !== action.deleteId);
     }
@@ -51,6 +57,10 @@ function TodosProvider({ children }: TodosProviderProps) {
     dispatch({ type: "add-todo", title, description });
   };
 
+  const handleTodoEdit = (editedTodo: Todo) => {
+    dispatch({ type: "edit-todo", editedTodo });
+  };
+
   const handleTodoDelete = (deleteId: string): void => {
     dispatch({ type: "delete-todo", deleteId });
   };
@@ -58,6 +68,7 @@ function TodosProvider({ children }: TodosProviderProps) {
   const value = {
     todos: todos,
     onTodoAdd: handleTodoAdd,
+    onTodoEdit: handleTodoEdit,
     onTodoDelete: handleTodoDelete,
   };
 

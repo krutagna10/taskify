@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { Todo } from "@/types";
+import { Todo } from "@/types/types";
 
 interface TodosState {
   todos: Todo[];

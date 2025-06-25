@@ -1,40 +1,44 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import TodosContext from "@/context/todos/todos-context";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
   DialogDescription,
+  DialogTrigger,
 } from "@/components/ui/dialog";
-import TodoAddForm from "./todo-add-form";
-
+import TodoForm from "@/components/todo-form";
 
 function TodoHeader() {
+  const { onTodoAdd } = useContext(TodosContext);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const handleDialogClose = () => {
+  const handleTodoFormSubmit = (title: string, description: string): void => {
+    onTodoAdd(title, description);
     setIsDialogOpen(false);
-  }
+  };
 
   return (
     <div className="flex items-center justify-between gap-4">
-      <h1 className="text-3xl">Taskify</h1>
+      <h2 className="text-xl">Todos</h2>
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger asChild>
-          <Button className="cursor-pointer items-center bg-green-700 text-white hover:bg-green-800">
-            Add Todo
-          </Button>
+          <Button>Add Todo</Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Add new Task</DialogTitle>
+            <DialogTitle>Add Todo</DialogTitle>
             <DialogDescription>
-              Please enter the title and description of task you want to add
+              Enter the task details below to create a new todo item.
             </DialogDescription>
           </DialogHeader>
-          <TodoAddForm onDialogClose={handleDialogClose} />
+          <TodoForm
+            task="Add"
+            values={{ title: "", description: "" }}
+            onTodoFormSubmit={handleTodoFormSubmit}
+          />
         </DialogContent>
       </Dialog>
     </div>

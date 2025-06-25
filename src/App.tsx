@@ -1,14 +1,14 @@
-import ThemeProvider from "./context/theme/theme-provider";
-import TodoHeader from "./components/todo-header";
-import TodosProvider from "./context/todos/todos-provider";
-import TodoList from "./components/todo-list";
+import ThemeProvider from "@/context/theme/theme-provider";
+import TodosProvider from "@/context/todos/todos-provider";
+import Header from "@/components/header";
+import TodoList from "@/components/todo-list";
 
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <TodosProvider>
+        <Header />
         <main className="space-y-4">
-          <TodoHeader />
           <TodoList />
         </main>
       </TodosProvider>

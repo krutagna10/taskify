@@ -1,6 +1,5 @@
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useContext, useState } from "react";
+import TodosContext from "@/context/todos/todos-context";
 import {
   Dialog,
   DialogContent,
@@ -9,47 +8,26 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import TodoForm from "@/components/todo-form";
+import { Todo } from "@/types/types";
 import { Eye, Trash2, SquarePen } from "lucide-react";
-import { Todo } from "@/types";
-
-const formSchema = z.object({
-  title: z.string().min(1, { message: "Title cannot be empty" }),
-  description: z.string(),
-});
 
 interface TodoItemProps {
   todo: Todo;
-  onTodoDelete: (deleteId: string) => void;
 }
 
-function TodoItem({ todo, onTodoDelete }: TodoItemProps) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: todo.title,
-      description: todo.description,
-    },
-  });
+function TodoItem({ todo }: TodoItemProps) {
+  const { onTodoDelete, onTodoEdit } = useContext(TodosContext);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-  }
+  const handleTodoFormSubmit = (title: string, description: string): void => {
+    onTodoEdit({ ...todo, title, description });
+    setIsDialogOpen(false);
+  };
 
   return (
     <li
-      className="flex items-center justify-between bg-zinc-900 p-4"
+      className="flex items-center justify-between bg-gray-100 p-4 dark:bg-zinc-900"
       key={todo.id}
     >
       <span>{todo.title}</span>
@@ -65,53 +43,22 @@ function TodoItem({ todo, onTodoDelete }: TodoItemProps) {
             </DialogHeader>
           </DialogContent>
         </Dialog>
-        <Dialog>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger>
             <SquarePen size={18} />
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Edit your todo</DialogTitle>
-              <DialogDescription>Your changes will be final</DialogDescription>
+              <DialogTitle>Edit todo</DialogTitle>
+              <DialogDescription>
+                Modify the task details and save to update your todo.
+              </DialogDescription>
             </DialogHeader>
-            <Form {...form}>
-              <form
-                className="space-y-4"
-                onSubmit={form.handleSubmit(onSubmit)}
-              >
-                <FormField
-                  control={form.control}
-                  name="title"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Title</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Task Name" {...field} />
-                      </FormControl>
-                      <FormDescription>This is your todo title</FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Description</FormLabel>
-                      <FormControl>
-                        <Textarea {...field} placeholder="Task Description" />
-                      </FormControl>
-                      <FormDescription>
-                        This is your todo description
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button>Edit Todo</Button>
-              </form>
-            </Form>
+            <TodoForm
+              task="Edit"
+              values={{ title: todo.title, description: todo.description }}
+              onTodoFormSubmit={handleTodoFormSubmit}
+            />
           </DialogContent>
         </Dialog>
         <button

@@ -5,16 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --font-josefin: "Josefin Sans", serif;
-}
-
-@layer base {
-  body {
-    font-family: var(--font-josefin);
-    min-height: 100vh;
-    display: grid;
-    place-content: center;
-  }
+  --font-jetbrains-mono: "JetBrains Mono", monospace;
 }
 
 :root {
@@ -109,7 +100,7 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-jetbrains-mono;
   }
 
   button:not([disabled]),
