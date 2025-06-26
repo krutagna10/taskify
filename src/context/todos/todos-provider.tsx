@@ -1,19 +1,7 @@
 import { useReducer } from "react";
 import TodosProviderContext from "./todos-context";
-import { Todo } from "@/types/types";
-
-const InitialTodos: Todo[] = [
-  {
-    id: crypto.randomUUID(),
-    title: "Item 1",
-    description: "Item 1 Description",
-  },
-  {
-    id: crypto.randomUUID(),
-    title: "Item 2",
-    description: "Item 2 Description",
-  },
-];
+import { Todo } from "@/types/todo";
+import { initialTodos } from "@/data/initial-todos";
 
 type TodosAction =
   | { type: "add-todo"; title: string; description: string }
@@ -25,6 +13,7 @@ function todosReducer(todos: Todo[], action: TodosAction): Todo[] {
     case "add-todo": {
       const newTodo = {
         id: crypto.randomUUID(),
+        isCompleted: false,
         title: action.title,
         description: action.description,
       };
@@ -51,7 +40,7 @@ interface TodosProviderProps {
 }
 
 function TodosProvider({ children }: TodosProviderProps) {
-  const [todos, dispatch] = useReducer(todosReducer, InitialTodos);
+  const [todos, dispatch] = useReducer(todosReducer, initialTodos);
 
   const handleTodoAdd = (title: string, description: string) => {
     dispatch({ type: "add-todo", title, description });

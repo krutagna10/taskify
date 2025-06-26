@@ -1,9 +1,8 @@
-type Theme = "dark" | "light" | "system";
-
 interface Todo {
   id: string;
+  isCompleted: boolean;
   title: string;
   description: string;
 }
 
-export type { Theme, Todo };
+export type { Todo }

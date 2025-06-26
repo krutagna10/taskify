@@ -8,8 +8,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
 import TodoForm from "@/components/todo-form";
-import { Todo } from "@/types/types";
+import { Todo } from "@/types/todo";
 import { Eye, Trash2, SquarePen } from "lucide-react";
 
 interface TodoItemProps {
@@ -30,7 +31,10 @@ function TodoItem({ todo }: TodoItemProps) {
       className="flex items-center justify-between bg-gray-100 p-4 dark:bg-zinc-900"
       key={todo.id}
     >
-      <span>{todo.title}</span>
+      <div className="flex items-center space-x-4">
+        <Checkbox />
+        <span>{todo.title}</span>
+      </div>
       <div className="space-x-4">
         <Dialog>
           <DialogTrigger>

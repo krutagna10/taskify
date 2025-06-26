@@ -7,5 +7,4 @@ This is a template template for building project using React, TypeScript, Tailwi
 - Typescript
 - Tailwind
 - Shadcn
-- Radix
 - Lucide
