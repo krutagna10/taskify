@@ -3,7 +3,7 @@ import { Todo } from "@/types/todo";
 
 interface TodosState {
   todos: Todo[];
-  onTodoAdd: (title: string, description: string) => void;
+  onTodoAdd: (newTodo: Todo) => void;
   onTodoEdit: (editedTodo: Todo) => void;
   onTodoDelete: (deleteId: string) => void;
 }

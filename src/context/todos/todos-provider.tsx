@@ -4,20 +4,14 @@ import { Todo } from "@/types/todo";
 import { initialTodos } from "@/data/initial-todos";
 
 type TodosAction =
-  | { type: "add-todo"; title: string; description: string }
+  | { type: "add-todo"; newTodo: Todo }
   | { type: "edit-todo"; editedTodo: Todo }
   | { type: "delete-todo"; deleteId: string };
 
 function todosReducer(todos: Todo[], action: TodosAction): Todo[] {
   switch (action.type) {
     case "add-todo": {
-      const newTodo = {
-        id: crypto.randomUUID(),
-        isCompleted: false,
-        title: action.title,
-        description: action.description,
-      };
-      return [...todos, newTodo];
+      return [...todos, action.newTodo];
     }
 
     case "edit-todo": {
@@ -42,8 +36,8 @@ interface TodosProviderProps {
 function TodosProvider({ children }: TodosProviderProps) {
   const [todos, dispatch] = useReducer(todosReducer, initialTodos);
 
-  const handleTodoAdd = (title: string, description: string) => {
-    dispatch({ type: "add-todo", title, description });
+  const handleTodoAdd = (newTodo: Todo) => {
+    dispatch({ type: "add-todo", newTodo });
   };
 
   const handleTodoEdit = (editedTodo: Todo) => {

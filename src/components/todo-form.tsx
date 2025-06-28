@@ -13,6 +13,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from "@/components/ui/dialog";
 
 const formSchema = z.object({
   title: z.string().min(1, { message: "Title cannot be empty" }),
@@ -20,12 +30,18 @@ const formSchema = z.object({
 });
 
 interface TodoFormProps {
-  task: string;
+  children: React.ReactNode;
+  task: "Add" | "Edit";
   values: { title: string; description: string };
   onTodoFormSubmit: (title: string, description: string) => void;
 }
 
-function TodoForm({ task, values, onTodoFormSubmit }: TodoFormProps) {
+function TodoForm({
+  children,
+  task,
+  values,
+  onTodoFormSubmit,
+}: TodoFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -36,42 +52,62 @@ function TodoForm({ task, values, onTodoFormSubmit }: TodoFormProps) {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     onTodoFormSubmit(values.title, values.description);
+    form.reset();
   }
 
   return (
-    <Form {...form}>
-      <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Title</FormLabel>
-              <FormControl>
-                <Input placeholder="Task Name" {...field} />
-              </FormControl>
-              <FormDescription>This is your todo title</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea {...field} placeholder="Task Description" />
-              </FormControl>
-              <FormDescription>This is your todo description</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button>{task} Todo</Button>
-      </form>
-    </Form>
+    <Dialog>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{task} Todo</DialogTitle>
+          <DialogDescription>
+            {task === "Add"
+              ? "Fill in the details to add a new task."
+              : "Modify the task details and save to update your todo."}
+          </DialogDescription>
+        </DialogHeader>
+        <Form {...form}>
+          <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Title</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Task Name" {...field} />
+                  </FormControl>
+                  <FormDescription>This is your todo title</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea {...field} placeholder="Task Description" />
+                  </FormControl>
+                  <FormDescription>
+                    This is your todo description
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <DialogFooter>
+              <DialogClose>
+                <Button type="submit">{task} Todo</Button>
+              </DialogClose>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
   );
 }
 

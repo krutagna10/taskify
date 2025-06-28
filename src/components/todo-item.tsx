@@ -12,6 +12,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import TodoForm from "@/components/todo-form";
 import { Todo } from "@/types/todo";
 import { Eye, Trash2, SquarePen } from "lucide-react";
+import { CheckedState } from "@radix-ui/react-checkbox";
 
 interface TodoItemProps {
   todo: Todo;
@@ -19,11 +20,13 @@ interface TodoItemProps {
 
 function TodoItem({ todo }: TodoItemProps) {
   const { onTodoDelete, onTodoEdit } = useContext(TodosContext);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleIsCompletedChange = (checked: CheckedState) => {
+    onTodoEdit({ ...todo, isCompleted: checked as boolean });
+  };
 
   const handleTodoFormSubmit = (title: string, description: string): void => {
     onTodoEdit({ ...todo, title, description });
-    setIsDialogOpen(false);
   };
 
   return (
@@ -32,8 +35,11 @@ function TodoItem({ todo }: TodoItemProps) {
       key={todo.id}
     >
       <div className="flex items-center space-x-4">
-        <Checkbox />
-        <span>{todo.title}</span>
+        <Checkbox
+          checked={todo.isCompleted}
+          onCheckedChange={handleIsCompletedChange}
+        />
+        {todo.isCompleted ? <del>{todo.title}</del> : <span>{todo.title}</span>}
       </div>
       <div className="space-x-4">
         <Dialog>
@@ -47,24 +53,15 @@ function TodoItem({ todo }: TodoItemProps) {
             </DialogHeader>
           </DialogContent>
         </Dialog>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger>
+        <TodoForm
+          task="Edit"
+          values={{ title: todo.title, description: todo.description }}
+          onTodoFormSubmit={handleTodoFormSubmit}
+        >
+          <button>
             <SquarePen size={18} />
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Edit todo</DialogTitle>
-              <DialogDescription>
-                Modify the task details and save to update your todo.
-              </DialogDescription>
-            </DialogHeader>
-            <TodoForm
-              task="Edit"
-              values={{ title: todo.title, description: todo.description }}
-              onTodoFormSubmit={handleTodoFormSubmit}
-            />
-          </DialogContent>
-        </Dialog>
+          </button>
+        </TodoForm>
         <button
           onClick={() => {
             onTodoDelete(todo.id);
