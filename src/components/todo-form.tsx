@@ -21,42 +21,39 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-  DialogClose,
 } from "@/components/ui/dialog";
+import { useState } from "react";
 
 const formSchema = z.object({
   title: z.string().min(1, { message: "Title cannot be empty" }),
   description: z.string(),
 });
 
+
 interface TodoFormProps {
   children: React.ReactNode;
   task: "Add" | "Edit";
-  values: { title: string; description: string };
+  values?: { title: string; description: string };
   onTodoFormSubmit: (title: string, description: string) => void;
 }
 
-function TodoForm({
-  children,
-  task,
-  values,
-  onTodoFormSubmit,
-}: TodoFormProps) {
+function TodoForm({ children, task, values, onTodoFormSubmit }: TodoFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: values.title,
-      description: values.description,
+      title: values ? values.title : "",
+      description: values ? values.description : "",
     },
   });
+  const [isOpen, setIsOpen] = useState(false);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     onTodoFormSubmit(values.title, values.description);
-    form.reset();
+    setIsOpen(false);
   }
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -100,9 +97,7 @@ function TodoForm({
               )}
             />
             <DialogFooter>
-              <DialogClose>
-                <Button type="submit">{task} Todo</Button>
-              </DialogClose>
+              <Button type="submit">{task} Todo</Button>
             </DialogFooter>
           </form>
         </Form>

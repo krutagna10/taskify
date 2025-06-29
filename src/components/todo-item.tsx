@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import TodosContext from "@/context/todos/todos-context";
 import {
   Dialog,
@@ -39,7 +39,7 @@ function TodoItem({ todo }: TodoItemProps) {
           checked={todo.isCompleted}
           onCheckedChange={handleIsCompletedChange}
         />
-        {todo.isCompleted ? <del>{todo.title}</del> : <span>{todo.title}</span>}
+        {todo.isCompleted ? <del className="text-gray-400">{todo.title}</del> : <span>{todo.title}</span>}
       </div>
       <div className="space-x-4">
         <Dialog>
